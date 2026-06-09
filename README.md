@@ -69,10 +69,28 @@ a gate the agent runs on itself.
 
 ## Install
 
+Install with the [`skills`](https://skills.sh) CLI, and **target your harness
+explicitly** with `-a`. Auto-detect can pick the wrong path — by default it
+installs to `.agents/skills/` (which Cursor, Codex, Amp and others read) but
+**Claude Code reads `.claude/skills/`**, so an auto-detected install can leave
+Claude Code unable to see the skill.
+
 ```bash
-npx skills add Novia-RDI-Seafaring/ax-testing                 # interactive: pick skills
-npx skills add Novia-RDI-Seafaring/ax-testing --skill ax-report
+# Claude Code, globally (→ ~/.claude/skills/, available in every project)
+npx skills add Novia-RDI-Seafaring/ax-testing -a claude-code -g -y
+
+# Cursor / Codex / Amp / … (these share .agents/skills/)
+npx skills add Novia-RDI-Seafaring/ax-testing -a cursor -g -y
+
+# just one of the skills
+npx skills add Novia-RDI-Seafaring/ax-testing --skill ax-report -a claude-code -g -y
 ```
+
+Flags: `-a/--agent <harness>` targets where files land, `-g/--global` installs to
+the user dir instead of the current project, `-y` skips the prompts.
+
+**Skills load at the agent's startup — restart the agent after installing.**
+Verify the files landed: `ls ~/.claude/skills/ax-report/SKILL.md`.
 
 Install `ax-report` wherever agents run; install `ax-review` wherever you
 triage.
