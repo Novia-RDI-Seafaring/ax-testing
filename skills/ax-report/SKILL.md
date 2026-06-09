@@ -60,11 +60,25 @@ feel "solved" and you forget it was ever a problem — that reflex is the enemy.
 **Under-reporting is the failure mode, not over-reporting.** When unsure whether
 something counts, file it at low severity; the triager drops noise.
 
-A concrete tell: if you ever catch yourself thinking "that was a bit annoying but
-I got it working" or "I'll just use the other command instead" — stop and file.
-That sentence *is* a friction report waiting to be written.
+**The single most diagnostic tell: you wrote glue code.** If you had to write
+`curl`, `grep`, a script, or otherwise probe, scrape, or reverse-engineer to get
+something the tool should expose directly, **that workaround IS the evidence** —
+file friction immediately. This is the case agents miss most, because there was
+no failed call to react to; there was an *absent* call you compensated for. The
+absence is the defect. Do not downgrade it to a "feature request" just because a
+capability is missing: a missing affordance that forced a real, evidenced
+workaround has an expected, an actual, and a workaround — that is a friction
+report, by definition.
+
+Another tell: if you catch yourself thinking "that was a bit annoying but I got
+it working" or "I'll just use the other command instead" — stop and file. That
+sentence *is* a friction report waiting to be written.
 
 **File a `friction` report when you hit a real, evidenced problem:**
+
+- You wrote code, probed, scraped, or reverse-engineered to do something the tool
+  should expose directly (a URL/route, a flag, where a file goes, which process
+  serves what). The glue code is the evidence.
 
 - A surface lied. The skill/docs listed a tool that does not exist or is named
   differently, or omitted one that does (you almost told the user "no" wrongly).
@@ -79,10 +93,17 @@ That sentence *is* a friction report waiting to be written.
   — a URL or route, a flag, where a file goes, which process serves what.
 - The tool did something surprising that contradicted what its surface told you.
 
-**Do not file** for a minor preference, a one-off, or a wish with no observed
-friction. A `friction` report you cannot back with *expected / actual /
-workaround* is not a report. If you only have a wish, file it as a
-`feature_request` (a lower tier), and keep it honest.
+**Do not file** for a minor preference or a one-off. A `friction` report you
+cannot back with *expected / actual / workaround* is not a report.
+
+**Wish vs. friction — do not confuse them** (this is the line that wrongly talks
+agents out of filing): a *wish* is something you'd like that cost you nothing —
+no workaround, no lost time, no glue code. That is a `feature_request`, the lower
+tier. A *missing affordance you actually had to work around* is **friction**: the
+workaround is your evidence, and you have an expected, an actual, and a
+workaround. "The tool can't do X" is only a wish when you did **not** have to
+compensate for it. The moment you wrote code to fill the gap, it is friction —
+file it as friction, not a feature_request.
 
 ## The report — evidence, not opinion
 
