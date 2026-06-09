@@ -60,10 +60,12 @@ Then classify it:
 
 ## How to file
 
-Prefer the bundled CLI (it validates and stores consistently):
+Prefer the bundled CLI (`ax_report.py`, in this skill's folder; it validates and
+stores consistently). Run it as `ax-report` if it is on PATH, otherwise
+`python3 <this-skill-dir>/ax_report.py`:
 
 ```bash
-python3 ax_report.py file \
+ax-report file \
   --tool anchor --surface "anchor check --probe" \
   --kind friction --heuristic honest_verdicts --severity high \
   --task "verify setup before ingesting" \
@@ -72,7 +74,7 @@ python3 ax_report.py file \
   --workaround "ignored the probe and ran ingest, which succeeded"
 ```
 
-Or pipe a JSON object on stdin: `... ax_report.py file --json -`.
+Or pipe a JSON object on stdin: `ax-report file --json -`.
 
 If the CLI is not available, write the same object yourself as a JSON file under
 the reports directory (default `~/.claude/ax-reports/<tool>/`), using the schema
@@ -85,4 +87,4 @@ Tell the user you filed a report and where. Do not file duplicates for the same
 issue in one session. Reports are for a human (or a triage agent) to review and,
 if real, promote into the tool's issue tracker. Filing into a void trains
 everyone that reporting is pointless, so reporting is only half the loop:
-triage is the other half (see `README.md`).
+triage (`ax-report list`) is the other half.

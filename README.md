@@ -34,30 +34,39 @@ analog of Nielsen's usability heuristics).
 
 ## What this repo is
 
-A skill (`SKILL.md`) plus a dependency-free CLI (`ax_report.py`) that together
-let any agent file an AX report from inside a session, and let a human triage the
-results.
+A [skills.sh](https://skills.sh)-compatible skill: one skill folder under
+`skills/`, installable into any supported harness with the `skills` CLI. The
+skill bundles a dependency-free CLI so an agent can file a report from inside a
+session, and a human can triage the results.
 
-- **`SKILL.md`** — the agent-facing instructions: when to file, the evidence a
-  report must carry, how to classify it, how to file it.
-- **`ax_report.py`** — `file`, `list`, `show`, `validate`. No dependencies.
-- **`schema/ax-report.schema.json`** — the report shape (JSON Schema draft-07).
-- **`heuristics.md`** — the AX heuristics and severity scale.
-- **`examples/`** — a real report.
+```
+skills/ax-report/
+├── SKILL.md                      # agent-facing: when + how to file
+├── ax_report.py                  # CLI: file / list / show / validate (no deps)
+├── heuristics.md                 # the AX heuristics + severity scale
+├── schema/ax-report.schema.json  # report shape (JSON Schema draft-07)
+└── examples/probe-cried-wolf.json
+```
 
 ## Install the skill
 
-Copy or symlink the skill where your harness discovers skills. For Claude Code:
+Install into any supported agent with the skills CLI (the whole skill folder is
+copied, CLI included):
 
 ```bash
-mkdir -p ~/.claude/skills/ax-report
-cp SKILL.md ~/.claude/skills/ax-report/SKILL.md
-# Put the CLI on PATH so the skill's preferred path works:
-install -m 0755 ax_report.py ~/.local/bin/ax-report
+npx skills add Novia-RDI-Seafaring/ax-reporting-skill
 ```
 
-An agent that hits friction can then file a report; if the CLI is absent it
-writes the JSON file directly, per the schema.
+This places `skills/ax-report/` under your harness's skills directory (for Claude
+Code, `~/.claude/skills/ax-report/`). To run the bundled CLI as `ax-report`, put
+it on PATH:
+
+```bash
+install -m 0755 ~/.claude/skills/ax-report/ax_report.py ~/.local/bin/ax-report
+```
+
+If the CLI is not on PATH, the skill falls back to writing the JSON report file
+directly, per the schema. Working without the convenience is itself good AX.
 
 ## File a report
 
