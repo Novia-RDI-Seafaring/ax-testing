@@ -49,16 +49,34 @@ when the tool fails you.
 
 ## When to file (and when not to)
 
+**The bar is low, and the check is constant.** This is the part agents get
+wrong: heads-down on the task, you adapt to friction and sail past it. After
+each thing you do with the tool, ask one question — *did that surface behave the
+way its docs, help, or output implied?* If you had to clean noise out of output,
+retry, guess a command or flag, work around something, or reverse-engineer how
+the tool works, that is friction. **File it before you move on**, while you still
+remember what you expected. The moment you finish the workaround it starts to
+feel "solved" and you forget it was ever a problem — that reflex is the enemy.
+**Under-reporting is the failure mode, not over-reporting.** When unsure whether
+something counts, file it at low severity; the triager drops noise.
+
+A concrete tell: if you ever catch yourself thinking "that was a bit annoying but
+I got it working" or "I'll just use the other command instead" — stop and file.
+That sentence *is* a friction report waiting to be written.
+
 **File a `friction` report when you hit a real, evidenced problem:**
 
 - A surface lied. The skill/docs listed a tool that does not exist or is named
   differently, or omitted one that does (you almost told the user "no" wrongly).
 - A check, probe, or verdict failed when the real operation actually works (or
   passed when it does not).
-- Logs, progress bars, or chatter polluted machine output (`stdout`), so a
-  strict parser would choke.
+- Logs, warnings, progress bars, or chatter rode along in the output, so you
+  had to read past noise or a strict parser would choke (you parsing it anyway
+  does not make it fine).
 - An error was an opaque stack trace with no code or hint.
 - A result lacked what you needed to act or cite, forcing a second call.
+- You had to reverse-engineer how to do something the tool should have told you
+  — a URL or route, a flag, where a file goes, which process serves what.
 - The tool did something surprising that contradicted what its surface told you.
 
 **Do not file** for a minor preference, a one-off, or a wish with no observed
