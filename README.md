@@ -1,4 +1,4 @@
-# ax-reporting-skill
+# ax-testing
 
 A global agent skill for filing **Agent Experience (AX)** reports. When a tool
 trips an agent up, the agent files structured, evidenced friction so the tool's
@@ -72,8 +72,8 @@ a gate the agent runs on itself.
 ## Install
 
 ```bash
-npx skills add Novia-RDI-Seafaring/ax-reporting-skill                 # interactive: pick skills
-npx skills add Novia-RDI-Seafaring/ax-reporting-skill --skill ax-report
+npx skills add Novia-RDI-Seafaring/ax-testing                 # interactive: pick skills
+npx skills add Novia-RDI-Seafaring/ax-testing --skill ax-report
 ```
 
 Install `ax-report` (and `ax-facilitate`) wherever agents run; install

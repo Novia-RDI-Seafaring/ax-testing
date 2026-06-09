@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://github.com/Novia-RDI-Seafaring/ax-reporting-skill/schema/ax-report.schema.json",
+  "$id": "https://github.com/Novia-RDI-Seafaring/ax-testing/blob/main/skills/ax-report/schema/ax-report.schema.json",
   "title": "AX report",
   "description": "A structured Agent Experience friction report or feature request.",
   "type": "object",
