@@ -58,33 +58,91 @@ Then classify it:
 - **severity** — `low` | `medium` | `high` | `critical`. A *silently false*
   signal outranks a dead-end, which outranks an extra round-trip.
 
-## How to file
+## How to file — write one JSON file
 
-Prefer the bundled CLI (`ax_report.py`, in this skill's folder; it validates and
-stores consistently). Run it as `ax-report` if it is on PATH, otherwise
-`python3 <this-skill-dir>/ax_report.py`:
+Filing is just writing a file. You already know how. There is no program to run:
+this skill is a method and a contract, nothing to execute. Write one JSON object
+to a path whose folders and name carry the report's key facts, so the next agent
+finds it with `ls` and `find` instead of opening every file.
 
-```bash
-ax-report file \
-  --tool anchor --surface "anchor check --probe" \
-  --kind friction --heuristic honest_verdicts --severity high \
-  --task "verify setup before ingesting" \
-  --expected "probe passes iff a real ingest would work" \
-  --actual "probe failed on a max_tokens param the model rejected; ingest worked" \
-  --workaround "ignored the probe and ran ingest, which succeeded"
+**Path** (under `$AX_REPORTS_DIR`, default `~/.claude/ax-reports/`):
+
+```
+<tool>/friction/<severity>/<utc-stamp>--<session>--<heuristic>--<id>.json
+<tool>/feature_request/<utc-stamp>--<session>--<id>.json
 ```
 
-Or pipe a JSON object on stdin: `ax-report file --json -`.
+`<utc-stamp>` is a sortable UTC time with no colons — get an exact one from
+`date -u +%Y-%m-%dT%H%M%SZ` (a universal shell command, not bundled code).
+`<session>` is the session id you were given (8 chars), shared by every finding
+from this goal so the batch is greppable; use `nosession` if you were not given
+one. `<id>` is any 8 hex characters, for uniqueness. So a high-severity
+honest-verdicts report about `anchor` from session `a1b2c3d4` lands at:
 
-If the CLI is not available, write the same object yourself as a JSON file under
-the reports directory (default `~/.claude/ax-reports/<tool>/`), using the schema
-in `schema/ax-report.schema.json`. Working even when a surface is missing is
-itself good AX.
+```
+~/.claude/ax-reports/anchor/friction/high/2026-06-09T114015Z--a1b2c3d4--honest_verdicts--8c2f1d44.json
+```
 
-## After filing
+The folders and filename now answer *which tool, friction or wish, how urgent,
+which heuristic, when* before anyone opens the file.
 
-Tell the user you filed a report and where. Do not file duplicates for the same
-issue in one session. Reports are for a human (or a triage agent) to review and,
-if real, promote into the tool's issue tracker. Filing into a void trains
-everyone that reporting is pointless, so reporting is only half the loop:
-triage (`ax-report list`) is the other half.
+**Contents** (full shape in `schema/ax-report.schema.json`):
+
+```json
+{
+  "schema_version": "0.1",
+  "id": "8c2f1d44",
+  "session_id": "a1b2c3d4",
+  "goal": "get an LKH pump datasheet's specs onto a cited canvas",
+  "created_at": "2026-06-09T11:40:15Z",
+  "tool": "anchor",
+  "surface": "anchor check --probe",
+  "kind": "friction",
+  "heuristic": "honest_verdicts",
+  "severity": "high",
+  "task": "verify the setup before ingesting",
+  "expected": "the probe passes iff a real ingest would work",
+  "actual": "probe failed on a max_tokens param the model rejected; ingest worked",
+  "workaround": "ignored the probe and ran ingest, which succeeded",
+  "agent": "claude-opus-4-8"
+}
+```
+
+A `friction` report MUST include `task`, `expected`, `actual`, `heuristic`, and
+`severity`. If you cannot fill `expected` and `actual`, you have a wish, not a
+report: file it as `feature_request` with a `suggestion`, or do not file. The
+path mirrors fields in the file on purpose — the path is the index, the file is
+the detail.
+
+You are the writer, not the reviewer. You do not need to read other reports to
+file yours, and you should not — leave the corpus to the triager. To avoid a
+same-issue duplicate you can *list* (not read) the target folder; the path
+already encodes tool, kind, severity, and heuristic, so a filename scan is
+enough: `ls <tool>/friction/<severity>/ | grep <heuristic>`.
+
+One shell idiom files the whole thing with universal tools:
+
+```bash
+dir=~/.claude/ax-reports/anchor/friction/high
+mkdir -p "$dir"
+name="$(date -u +%Y-%m-%dT%H%M%SZ)--a1b2c3d4--honest_verdicts--$(openssl rand -hex 4).json"
+cat > "$dir/$name" <<'JSON'
+{ ...the object shown above... }
+JSON
+```
+
+## Reading reports (triage)
+
+A reviewer, human or agent, reads the corpus with ordinary filesystem tools,
+because the path is the index. No program required here either:
+
+```bash
+tree ~/.claude/ax-reports                                   # whole corpus, counts per tool/severity
+ls ~/.claude/ax-reports/anchor/friction/high/               # urgent anchor items; names show date + heuristic
+find ~/.claude/ax-reports -path '*/friction/*honest_verdicts*'   # one heuristic across all tools
+cat <file>                                                  # full detail when a name looks worth opening
+```
+
+Promote the real ones into the relevant tool's issue tracker. Do not file
+duplicates for the same issue in one session. Tell the user what you filed and
+where.

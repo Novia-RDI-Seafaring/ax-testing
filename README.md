@@ -29,78 +29,72 @@ them as truth. So the cardinal AX defect is a surface that *lies* — a doc that
 omits a real tool, a check that fails when the operation works, logs mixed into
 machine output. Contract truth matters more than features.
 
-See [`heuristics.md`](./heuristics.md) for the working heuristic set (the agent
-analog of Nielsen's usability heuristics).
+See [`heuristics.md`](./skills/ax-report/heuristics.md) for the working heuristic
+set (the agent analog of Nielsen's usability heuristics).
 
-## What this repo is
+## Three skills, one loop
 
-A [skills.sh](https://skills.sh)-compatible skill: one skill folder under
-`skills/`, installable into any supported harness with the `skills` CLI. The
-skill bundles a dependency-free CLI so an agent can file a report from inside a
-session, and a human can triage the results.
+The full AX-testing loop, as three [skills.sh](https://skills.sh)-compatible
+skills under `skills/`. Each installs independently into any supported harness.
+
+| Skill | Role | What it does |
+| --- | --- | --- |
+| **`ax-facilitate`** | run the test | Spawns a *subject* sub-agent to pursue a real goal with only the tool's surface, observes it, and files the friction it hits. The doer and the observer are separate on purpose. |
+| **`ax-report`** | the contract | Defines a single finding: the evidence it must carry, how to classify it, and the self-describing path it is written to. |
+| **`ax-review`** | triage | Reads the corpus with filesystem tools, groups by session / tool / severity, summarizes, and decides what to promote into a tool's issue tracker. |
 
 ```
-skills/ax-report/
-├── SKILL.md                      # agent-facing: when + how to file
-├── ax_report.py                  # CLI: file / list / show / validate (no deps)
-├── heuristics.md                 # the AX heuristics + severity scale
-├── schema/ax-report.schema.json  # report shape (JSON Schema draft-07)
-└── examples/probe-cried-wolf.json
+skills/
+├── ax-facilitate/SKILL.md
+├── ax-report/
+│   ├── SKILL.md
+│   ├── heuristics.md
+│   ├── schema/ax-report.schema.json
+│   └── examples/probe-cried-wolf.json
+└── ax-review/SKILL.md
 ```
 
-## Install the skill
+## No code, on purpose
 
-Install into any supported agent with the skills CLI (the whole skill folder is
-copied, CLI included):
+These skills ship **no program to run**. A skill that bundles an executable
+trades the agent's existing trust boundary for the repo author's supply chain,
+which is a bad trade for tasks an agent already does natively. So:
+
+- **Filing** is "write a JSON file to a self-describing path." The agent already
+  knows how to write a file.
+- **Reading** is `tree` / `ls` / `find` / `cat`. The path encodes tool, kind,
+  severity, heuristic, session, and time, so the filesystem *is* the index.
+
+A skill should be **data, not code**, whenever the task is something the agent
+can already do. Enforcement belongs on the trusted reader's side (triage), not in
+a gate the agent runs on itself.
+
+## Install
 
 ```bash
-npx skills add Novia-RDI-Seafaring/ax-reporting-skill
+npx skills add Novia-RDI-Seafaring/ax-reporting-skill                 # interactive: pick skills
+npx skills add Novia-RDI-Seafaring/ax-reporting-skill --skill ax-report
 ```
 
-This places `skills/ax-report/` under your harness's skills directory (for Claude
-Code, `~/.claude/skills/ax-report/`). To run the bundled CLI as `ax-report`, put
-it on PATH:
+Install `ax-report` (and `ax-facilitate`) wherever agents run; install
+`ax-review` wherever you triage.
 
-```bash
-install -m 0755 ~/.claude/skills/ax-report/ax_report.py ~/.local/bin/ax-report
+## Where reports live
+
+Under `~/.claude/ax-reports/` (override with `AX_REPORTS_DIR`), one JSON file per
+finding, append-only, at a path that carries its facts:
+
+```
+<tool>/friction/<severity>/<utc>--<session>--<heuristic>--<id>.json
+<tool>/feature_request/<utc>--<session>--<id>.json
+<tool>/sessions/<utc>--<session>.json        # a goal + its outcome
 ```
 
-If the CLI is not on PATH, the skill falls back to writing the JSON report file
-directly, per the schema. Working without the convenience is itself good AX.
-
-## File a report
-
-```bash
-ax-report file \
-  --tool anchor --surface "anchor check --probe" \
-  --kind friction --heuristic honest_verdicts --severity high \
-  --task "verify setup before ingesting" \
-  --expected "probe passes iff a real ingest would work" \
-  --actual "probe failed on a max_tokens param the model rejected; ingest worked" \
-  --workaround "ignored the probe and ran ingest, which succeeded"
-```
-
-Reports land under `~/.claude/ax-reports/<tool>/` (override with
-`AX_REPORTS_DIR`). One JSON file per report, append-only.
-
-A `friction` report must carry evidence (`task`, `expected`, `actual`) and a
-`heuristic` + `severity`. A wish with no observed friction is a `feature_request`
-instead, kept a clear tier below friction. That constraint is the whole point: it
-keeps the corpus high-signal rather than a suggestion box.
-
-## Triage (the other half of the loop)
-
-Reporting only pays off if someone reads it. A write-only dump trains agents that
-reporting is pointless.
-
-```bash
-ax-report list --severity high        # what needs attention
-ax-report show 1a2b3c4d               # full report by id prefix
-```
-
-Review reports, then promote the real ones into the relevant tool's issue
-tracker. The corpus also doubles as AX research data: each report is a row in a
-findings table, classified by heuristic and severity.
+A `friction` report must carry evidence (`task`, `expected`, `actual`) plus a
+`heuristic` and `severity`. A wish with no observed friction is a
+`feature_request`, a clear tier below friction. That constraint keeps the corpus
+high-signal rather than a suggestion box. The corpus also doubles as AX research
+data: every report is a findings-table row, classified by heuristic and severity.
 
 ## License
 
