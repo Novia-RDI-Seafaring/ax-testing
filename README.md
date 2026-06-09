@@ -39,7 +39,7 @@ skills under `skills/`. Each installs independently into any supported harness.
 
 | Skill | Role | What it does |
 | --- | --- | --- |
-| **`ax-facilitate`** | run the test | Spawns a *subject* sub-agent to pursue a real goal with only the tool's surface, observes it, and files the friction it hits. The doer and the observer are separate on purpose. |
+| **`ax-facilitate`** | run the test | Use the tool toward a real goal, keeping a running log of friction *as it happens*; after the goal, judge those notes cold and file them. Capture-in-the-moment beats normalizing a quirk away; judging-after beats the mid-task urge to call a broken tool fine. An optional second agent reads the transcript to catch friction you adapted to instantly. |
 | **`ax-report`** | the contract | Defines a single finding: the evidence it must carry, how to classify it, and the self-describing path it is written to. |
 | **`ax-review`** | triage | Reads the corpus with filesystem tools, groups by session / tool / severity, summarizes, and decides what to promote into a tool's issue tracker. |
 
