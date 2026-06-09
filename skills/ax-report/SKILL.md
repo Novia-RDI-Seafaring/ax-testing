@@ -24,6 +24,29 @@ harder than it should, that is an AX defect, and it is worth capturing the same
 way a usability tester captures a confused click. This skill files a structured
 report so the tool's maintainers can fix the contract.
 
+## Getting started — when a user puts you on a tool to evaluate
+
+If a user says something like *"we're testing `<tool>`; use ax-report to log
+friction as we go"*, set up once and then **let the user drive**:
+
+1. **Do not run your own test suite.** The user gives the tasks; you do them with
+   the tool and file a report only when something actually trips you. Reporting
+   is a side-channel to the real work, not a reason to go probe the tool.
+2. **Fix the subject.** `<tool>` is what every report's `tool` field says, no
+   matter which command, flag, or MCP tool you happen to touch.
+3. **Mint a `session_id`** (`openssl rand -hex 4`) so the run's findings batch
+   together.
+4. **Tell the user, in one line, where things will go** — the `session_id` and
+   the reports directory `~/.claude/ax-reports/<tool>/` (or `$AX_REPORTS_DIR`) —
+   so they know it is set up.
+5. **Then stop and wait for their first task.** File reactively as friction
+   arises (see below). Only pursue a goal yourself, keeping a running log, if the
+   user explicitly asks you to *run the evaluation* — that is the optional
+   session mode at the end of this file.
+
+That is the whole handshake. The default is reactive: do what you are asked, file
+when the tool fails you.
+
 ## When to file (and when not to)
 
 **File a `friction` report when you hit a real, evidenced problem:**
@@ -134,11 +157,14 @@ cat > "$dir/$name" <<'JSON'
 JSON
 ```
 
-## Running an evaluation session (optional)
+## Running an evaluation session (optional, only if asked to drive)
 
-The above is for friction you hit while doing something else: file it on the
-spot. When you instead *set out* to AX-test a tool, run it as a session so the
-findings batch together and you judge them honestly:
+Everything above is reactive: the user drives, you file when the tool trips you.
+This section is the other mode, and you use it **only when the user asks you to
+run the evaluation yourself** — to go pursue a goal and report what breaks. Do
+not start this on your own; an unasked-for self-driven test is exactly the
+over-eager behavior to avoid. When asked, run it as a session so the findings
+batch together and you judge them honestly:
 
 1. Pick a realistic, end-to-end goal and a `session_id` (`openssl rand -hex 4`).
 2. Pursue the goal for real. As you go, the instant the tool makes you pause —

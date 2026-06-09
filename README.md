@@ -95,6 +95,19 @@ Verify the files landed: `ls ~/.claude/skills/ax-report/SKILL.md`.
 Install `ax-report` wherever agents run; install `ax-review` wherever you
 triage.
 
+## Using it
+
+After restarting your agent, put it on a tool and then just work. Tell it once:
+
+> We are evaluating **`<tool>`**. As I ask you to do things with it, use the
+> `ax-report` skill to log friction when something trips you. Don't run your own
+> tests — just do what I ask and file reports as we go.
+
+The agent confirms the subject, a `session_id`, and where reports will land, then
+waits for your tasks and files reactively. If you instead want it to *drive* —
+pursue a goal on its own and report what breaks — say "run an AX evaluation of
+`<tool>` toward this goal: …". Triage later with the `ax-review` skill.
+
 ## Where reports live
 
 Under `~/.claude/ax-reports/` (override with `AX_REPORTS_DIR`), one JSON file per
