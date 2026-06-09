@@ -1,0 +1,39 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/Novia-RDI-Seafaring/ax-reporting-skill/schema/ax-report.schema.json",
+  "title": "AX report",
+  "description": "A structured Agent Experience friction report or feature request.",
+  "type": "object",
+  "required": ["schema_version", "id", "created_at", "tool", "kind"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": { "type": "string", "const": "0.1" },
+    "id": { "type": "string", "description": "Unique id (uuid4)." },
+    "created_at": { "type": "string", "description": "ISO 8601 UTC timestamp." },
+    "tool": { "type": "string", "minLength": 1, "description": "The tool the report is about, e.g. 'anchor'." },
+    "surface": { "type": "string", "description": "The specific command / MCP tool / endpoint, e.g. 'anchor check --probe'." },
+    "kind": { "type": "string", "enum": ["friction", "feature_request"] },
+    "heuristic": {
+      "type": "string",
+      "enum": ["contract_truth", "pure_machine_output", "single_round_trip", "honest_verdicts", "discoverability", "self_correcting_errors", "other"]
+    },
+    "severity": { "type": "string", "enum": ["low", "medium", "high", "critical"] },
+    "task": { "type": "string", "description": "What the agent was trying to do." },
+    "expected": { "type": "string", "description": "What the tool's surface led the agent to expect. Required for friction." },
+    "actual": { "type": "string", "description": "What actually happened. Required for friction." },
+    "workaround": { "type": ["string", "null"], "description": "What the agent did instead, or null if blocked." },
+    "suggestion": { "type": "string", "description": "Proposed fix, or the body of a feature_request." },
+    "agent": { "type": "string", "description": "The reporting agent / model, e.g. 'claude-opus-4-8'." },
+    "session_hint": { "type": "string", "description": "Optional pointer back to the session or transcript." }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "kind": { "const": "friction" } } },
+      "then": { "required": ["heuristic", "severity", "task", "expected", "actual"] }
+    },
+    {
+      "if": { "properties": { "kind": { "const": "feature_request" } } },
+      "then": { "required": ["suggestion"] }
+    }
+  ]
+}
