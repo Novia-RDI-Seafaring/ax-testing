@@ -1,5 +1,7 @@
-__pycache__/
-*.pyc
-.ax-reports/
-.ruff_cache/
+# OS / editor cruft
 .DS_Store
+
+# A local AX report corpus, if one is ever generated inside the repo
+# (reports normally live under ~/.claude/ax-reports/, not here).
+ax-reports/
+.ax-reports/
