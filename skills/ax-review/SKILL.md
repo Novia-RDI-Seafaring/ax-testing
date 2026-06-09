@@ -6,7 +6,7 @@ description: |
   tracker. Use when asked to "triage AX reports", "review the ax-reports",
   "what AX issues were filed for <tool>", "summarize agent friction", or "what
   should we fix first". You are the reviewer half of AX reporting — the reports
-  are written by the ax-report / ax-facilitate skills. Trigger words: "triage",
+  are written by the ax-report skill. Trigger words: "triage",
   "review AX reports", "AX findings", "what friction was reported".
 ---
 

@@ -10,8 +10,11 @@ description: |
   second call. Report observed friction with evidence (what you expected, what
   happened, what you did instead), not wishes. Also files lower-priority feature
   requests, kept clearly separate. Reports are written locally for a human to
-  triage. Trigger words: "AX", "agent experience", "this tool tripped me up",
-  "the docs were wrong", "report friction", "file an AX report".
+  triage. Default to filing the moment friction happens; for a deliberate
+  evaluation of a tool, see "Running an evaluation session" below. Trigger
+  words: "AX", "agent experience", "this tool tripped me up", "the docs were
+  wrong", "report friction", "file an AX report", "AX-test this tool",
+  "evaluate the agent experience".
 ---
 
 # ax-report — report Agent Experience friction
@@ -131,18 +134,32 @@ cat > "$dir/$name" <<'JSON'
 JSON
 ```
 
-## Reading reports (triage)
+## Running an evaluation session (optional)
 
-A reviewer, human or agent, reads the corpus with ordinary filesystem tools,
-because the path is the index. No program required here either:
+The above is for friction you hit while doing something else: file it on the
+spot. When you instead *set out* to AX-test a tool, run it as a session so the
+findings batch together and you judge them honestly:
 
-```bash
-tree ~/.claude/ax-reports                                   # whole corpus, counts per tool/severity
-ls ~/.claude/ax-reports/anchor/friction/high/               # urgent anchor items; names show date + heuristic
-find ~/.claude/ax-reports -path '*/friction/*honest_verdicts*'   # one heuristic across all tools
-cat <file>                                                  # full detail when a name looks worth opening
-```
+1. Pick a realistic, end-to-end goal and a `session_id` (`openssl rand -hex 4`).
+2. Pursue the goal for real. As you go, the instant the tool makes you pause —
+   a retry, a doc that did not match, a verdict that disagreed with reality,
+   output you had to clean, an opaque error, a forced second call, a plain
+   "huh" — jot **one line** (tool, what you were doing, expected, happened). Do
+   not stop, do not judge yet. Capturing now beats normalizing the quirk away.
+3. After the goal, judge the notes **cold** — the task is done, nothing to
+   prove, so the urge to call a broken tool fine is gone. Drop your own
+   mistakes, classify the rest (heuristic + severity), and file each as a report
+   sharing this `session_id` and `goal`.
+4. Record the run at `<tool>/sessions/<utc>--<session_id>.json` (`session_id`,
+   `goal`, `tool`, `started_at`, `achieved`, `summary`), then give the user the
+   findings table and the single highest-value fix.
 
-Promote the real ones into the relevant tool's issue tracker. Do not file
-duplicates for the same issue in one session. Tell the user what you filed and
-where.
+Optional: have a *separate* agent read your transcript afterward to catch
+friction you adapted to so fast you never noticed it. Keep it judging, not doing.
+
+## Triage
+
+Reading and triaging the corpus is a separate role — see the `ax-review` skill,
+or just use filesystem tools (`tree` / `ls` / `find` / `cat`), since the path is
+the index. Promote real findings into the tool's issue tracker. Do not file
+duplicates for the same issue in one session; tell the user what you filed.

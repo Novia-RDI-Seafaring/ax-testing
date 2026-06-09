@@ -32,20 +32,18 @@ machine output. Contract truth matters more than features.
 See [`heuristics.md`](./skills/ax-report/heuristics.md) for the working heuristic
 set (the agent analog of Nielsen's usability heuristics).
 
-## Three skills, one loop
+## Two skills
 
-The full AX-testing loop, as three [skills.sh](https://skills.sh)-compatible
-skills under `skills/`. Each installs independently into any supported harness.
+The AX-testing loop, as two [skills.sh](https://skills.sh)-compatible skills
+under `skills/`. Each installs independently into any supported harness.
 
 | Skill | Role | What it does |
 | --- | --- | --- |
-| **`ax-facilitate`** | run the test | Use the tool toward a real goal, keeping a running log of friction *as it happens*; after the goal, judge those notes cold and file them. Capture-in-the-moment beats normalizing a quirk away; judging-after beats the mid-task urge to call a broken tool fine. An optional second agent reads the transcript to catch friction you adapted to instantly. |
-| **`ax-report`** | the contract | Defines a single finding: the evidence it must carry, how to classify it, and the self-describing path it is written to. |
-| **`ax-review`** | triage | Reads the corpus with filesystem tools, groups by session / tool / severity, summarizes, and decides what to promote into a tool's issue tracker. |
+| **`ax-report`** | report | File a finding the moment a tool trips you: the evidence it must carry, how to classify it, the self-describing path it lands at. Includes an optional *evaluation-session* mode for when you set out to AX-test a tool — keep a running log of friction as it happens, then judge the notes cold and file the batch. |
+| **`ax-review`** | triage | Read the corpus with filesystem tools, group by session / tool / severity, summarize, and decide what to promote into a tool's issue tracker. |
 
 ```
 skills/
-├── ax-facilitate/SKILL.md
 ├── ax-report/
 │   ├── SKILL.md
 │   ├── heuristics.md
@@ -76,8 +74,8 @@ npx skills add Novia-RDI-Seafaring/ax-testing                 # interactive: pic
 npx skills add Novia-RDI-Seafaring/ax-testing --skill ax-report
 ```
 
-Install `ax-report` (and `ax-facilitate`) wherever agents run; install
-`ax-review` wherever you triage.
+Install `ax-report` wherever agents run; install `ax-review` wherever you
+triage.
 
 ## Where reports live
 
