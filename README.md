@@ -32,18 +32,20 @@ machine output. Contract truth matters more than features.
 See [`heuristics.md`](./skills/ax-report/heuristics.md) for the working heuristic
 set (the agent analog of Nielsen's usability heuristics).
 
-## Two skills
+## Three skills
 
-The AX-testing loop, as two [skills.sh](https://skills.sh)-compatible skills
+The AX-testing loop, as three [skills.sh](https://skills.sh)-compatible skills
 under `skills/`. Each installs independently into any supported harness.
 
 | Skill | Role | What it does |
 | --- | --- | --- |
-| **`ax-report`** | report | File a finding the moment a tool trips you: the evidence it must carry, how to classify it, the self-describing path it lands at. Includes an optional *evaluation-session* mode for when you set out to AX-test a tool — keep a running log of friction as it happens, then judge the notes cold and file the batch. |
-| **`ax-review`** | triage | Read the corpus with filesystem tools, group by session / tool / severity, summarize, and decide what to promote into a tool's issue tracker. |
+| **`ax-run`** | orchestrate | Run a *valid* AX test: drive a real harness as a fresh, unbiased subject in an isolated workspace so it cannot cheat by reading the tool's source — and treat "needing the source" as a finding rather than a shortcut. For whoever drives the test. |
+| **`ax-report`** | report | File a finding the moment a tool trips you: the evidence it must carry, how to classify it, the self-describing path it lands at. Includes an optional *evaluation-session* mode for when you set out to AX-test a tool — keep a running log of friction as it happens, then judge the notes cold and file the batch. For the subject. |
+| **`ax-review`** | triage | Read the corpus with filesystem tools, group by session / tool / severity, summarize, and decide what to promote into a tool's issue tracker. For the reviewer. |
 
 ```
 skills/
+├── ax-run/SKILL.md
 ├── ax-report/
 │   ├── SKILL.md
 │   ├── heuristics.md
@@ -51,6 +53,11 @@ skills/
 │   └── examples/probe-cried-wolf.json
 └── ax-review/SKILL.md
 ```
+
+The three are deliberately separate roles: **`ax-run`** sets up and audits the
+test, **`ax-report`** is what the subject files into, **`ax-review`** is for the
+reviewer. Keeping the orchestrator out of the subject seat is what keeps the test
+unbiased.
 
 ## No code, on purpose
 
