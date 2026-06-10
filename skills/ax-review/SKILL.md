@@ -6,16 +6,34 @@ description: |
   tracker. Use when asked to "triage AX reports", "review the ax-reports",
   "what AX issues were filed for <tool>", "summarize agent friction", or "what
   should we fix first". You are the reviewer half of AX reporting — the reports
-  are written by the ax-report skill. Trigger words: "triage",
-  "review AX reports", "AX findings", "what friction was reported".
+  are written by the ax-report skill. Trigger words: "triage", "read the AX
+  reports", "review AX reports", "AX findings", "what friction was reported".
 ---
 
 # ax-review — triage the AX report corpus
 
-Reports are JSON files under `~/.claude/ax-reports/` (or `$AX_REPORTS_DIR`). The
-path is the index, so you read the corpus with ordinary filesystem tools — there
-is no program to run. Your job: turn a pile of reports into a ranked, deduped
-summary and a short list of things worth fixing.
+Reports are JSON files in the reports directory: `$AX_REPORTS_DIR`, or
+`~/.claude/ax-reports/` if that is unset. **Resolve it once and reuse it**, since
+it may not be the default:
+
+```bash
+R="${AX_REPORTS_DIR:-$HOME/.claude/ax-reports}"
+```
+
+The path is the index, so you read the corpus with ordinary filesystem tools —
+there is no program to run. Your job: turn a pile of reports into a ranked,
+deduped summary and a short list of things worth fixing.
+
+**The corpus is global.** Reports from every tool and project accumulate under
+`$R`, one folder per tool. So **start by seeing what is there and focus on the
+tool you were asked about**:
+
+```bash
+ls "$R"        # the tools that have reports (e.g. anchor, ax-report, saari, …)
+```
+
+If the tool you care about has no folder, there are no reports for it yet — say
+so plainly rather than triaging some other tool's reports.
 
 ## Layout you are reading
 
@@ -30,14 +48,21 @@ so you can filter before opening anything.
 
 ## Read with filesystem tools
 
+With `R` resolved as above (substitute your tool for `anchor` and the real
+session id for `a1b2c3d4`):
+
 ```bash
-tree ~/.claude/ax-reports                                      # whole corpus + counts
-ls ~/.claude/ax-reports/anchor/friction/critical/             # most urgent first
-find ~/.claude/ax-reports -path '*/friction/*honest_verdicts*' # one heuristic, all tools
-find ~/.claude/ax-reports -name '*--a1b2c3d4--*'              # every finding from one session/goal
-cat ~/.claude/ax-reports/anchor/sessions/*--a1b2c3d4.json     # that session's goal + outcome
-cat <report.json>                                             # full detail
+find "$R" -type f -name '*.json' | sort           # every report (portable; no deps)
+tree "$R"                                          # nicer overview, only if `tree` is installed
+ls "$R"/anchor/friction/critical/ "$R"/anchor/friction/high/ 2>/dev/null  # most urgent first
+find "$R" -path '*/friction/*honest_verdicts*'    # one heuristic, across tools
+find "$R" -name '*--a1b2c3d4--*'                   # every finding from one session/goal
+cat "$R"/anchor/sessions/*--a1b2c3d4.json          # that session's goal + outcome
+cat <report.json>                                  # full detail
 ```
+
+Prefer `find` for listing; `tree` is a convenience that may be absent. Each
+report is plain JSON — read it with `cat` and parse it however you like.
 
 ## Produce a triage
 

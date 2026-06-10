@@ -188,7 +188,7 @@ enough: `ls <tool>/friction/<severity>/ | grep <heuristic>`.
 One shell idiom files the whole thing with universal tools:
 
 ```bash
-dir=~/.claude/ax-reports/anchor/friction/high
+dir="${AX_REPORTS_DIR:-$HOME/.claude/ax-reports}/anchor/friction/high"
 mkdir -p "$dir"
 name="$(date -u +%Y-%m-%dT%H%M%SZ)--a1b2c3d4--honest_verdicts--$(openssl rand -hex 4).json"
 cat > "$dir/$name" <<'JSON'
