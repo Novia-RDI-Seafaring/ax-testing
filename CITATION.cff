@@ -1,0 +1,47 @@
+cff-version: 1.2.0
+message: >-
+  If you use these skills or the Agent Experience (AX) testing method, please
+  cite the paper below.
+title: ax-testing
+abstract: >-
+  Code-free agent skills for Agent Experience (AX) testing: filing and triaging
+  structured friction reports while an agent uses a tool.
+license: MIT
+repository-code: https://github.com/Novia-RDI-Seafaring/ax-testing
+authors:
+  - given-names: Christoffer
+    family-names: Björkskog
+    affiliation: Novia University of Applied Sciences
+  - given-names: Lamin
+    family-names: Jatta
+    affiliation: Novia University of Applied Sciences
+  - given-names: Mikael
+    family-names: Manggård
+    affiliation: Novia University of Applied Sciences
+  - given-names: Johan
+    family-names: Westö
+    affiliation: Novia University of Applied Sciences
+  - given-names: Jukka
+    family-names: Häkkinen
+    affiliation: Novia University of Applied Sciences
+preferred-citation:
+  type: article
+  title: "AX: Agent Experience as the Dual of User Experience"
+  year: 2026
+  notes: "Preprint, in preparation. Add the arXiv ID / DOI here when available."
+  authors:
+    - given-names: Christoffer
+      family-names: Björkskog
+      affiliation: Novia University of Applied Sciences
+    - given-names: Lamin
+      family-names: Jatta
+      affiliation: Novia University of Applied Sciences
+    - given-names: Mikael
+      family-names: Manggård
+      affiliation: Novia University of Applied Sciences
+    - given-names: Johan
+      family-names: Westö
+      affiliation: Novia University of Applied Sciences
+    - given-names: Jukka
+      family-names: Häkkinen
+      affiliation: Novia University of Applied Sciences

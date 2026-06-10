@@ -125,6 +125,24 @@ A `friction` report must carry evidence (`task`, `expected`, `actual`) plus a
 high-signal rather than a suggestion box. The corpus also doubles as AX research
 data: every report is a findings-table row, classified by heuristic and severity.
 
+## Citing
+
+If you use these skills or the AX testing method, please cite the paper
+(GitHub also renders a "Cite this repository" button from `CITATION.cff`):
+
+> Björkskog, C., Jatta, L., Manggård, M., Westö, J., & Häkkinen, J. (2026).
+> *AX: Agent Experience as the Dual of User Experience.* Preprint, in preparation.
+
+```bibtex
+@article{bjorkskog2026ax,
+  title  = {{AX}: Agent Experience as the Dual of User Experience},
+  author = {Bj\"orkskog, Christoffer and Jatta, Lamin and Mangg\aa{}rd, Mikael
+            and West\"o, Johan and H\"akkinen, Jukka},
+  year   = {2026},
+  note   = {Preprint, in preparation}
+}
+```
+
 ## License
 
 MIT. See [`LICENSE`](./LICENSE).
