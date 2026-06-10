@@ -26,26 +26,36 @@ report so the tool's maintainers can fix the contract.
 
 ## Getting started — when a user puts you on a tool to evaluate
 
-If a user says something like *"we're testing `<tool>`; use ax-report to log
-friction as we go"*, set up once and then **let the user drive**:
+The user should only have to say something short, like *"I want to AX-test
+`<tool>`"* or *"we're testing `<tool>`, log friction as we go"*. The rest is your
+job, from this skill — do not make them recite a contract. Set up once, then
+**let them drive**:
 
 1. **Do not run your own test suite.** The user gives the tasks; you do them with
    the tool and file a report only when something actually trips you. Reporting
    is a side-channel to the real work, not a reason to go probe the tool.
-2. **Fix the subject.** `<tool>` is what every report's `tool` field says, no
+2. **Stay on the user surface.** Use only what a user has — the tool's CLI and
+   `--help`, its MCP tools, its skill, its public docs. **Do not read the tool's
+   source code, its installed package files, or its tests.** A real user cannot,
+   and it hides the very friction you are testing for. If you find yourself
+   wanting to read the implementation to make progress, that wanting is itself a
+   finding (a missing affordance or unclear contract) — file it and continue from
+   the surface.
+3. **Fix the subject.** `<tool>` is what every report's `tool` field says, no
    matter which command, flag, or MCP tool you happen to touch.
-3. **Mint a `session_id`** (`openssl rand -hex 4`) so the run's findings batch
+4. **Mint a `session_id`** (`openssl rand -hex 4`) so the run's findings batch
    together.
-4. **Tell the user, in one line, where things will go** — the `session_id` and
+5. **Tell the user, in one line, where things will go** — the `session_id` and
    the reports directory `~/.claude/ax-reports/<tool>/` (or `$AX_REPORTS_DIR`) —
    so they know it is set up.
-5. **Then stop and wait for their first task.** File reactively as friction
+6. **Then stop and wait for their first task.** File reactively as friction
    arises (see below). Only pursue a goal yourself, keeping a running log, if the
    user explicitly asks you to *run the evaluation* — that is the optional
    session mode at the end of this file.
 
-That is the whole handshake. The default is reactive: do what you are asked, file
-when the tool fails you.
+That is the whole handshake, and it is yours to carry: the user says one line,
+you do steps 1–6 and then work. The default is reactive — do what you are asked,
+stay on the surface, and file the moment the tool fails you.
 
 ## When to file (and when not to)
 

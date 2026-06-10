@@ -104,16 +104,19 @@ triage.
 
 ## Using it
 
-After restarting your agent, put it on a tool and then just work. Tell it once:
+The skill carries the contract, so you don't have to. After restarting the
+agent, in a fresh session, say one line:
 
-> We are evaluating **`<tool>`**. As I ask you to do things with it, use the
-> `ax-report` skill to log friction when something trips you. Don't run your own
-> tests — just do what I ask and file reports as we go.
+> I want to AX-test **`<tool>`**.
 
-The agent confirms the subject, a `session_id`, and where reports will land, then
-waits for your tasks and files reactively. If you instead want it to *drive* —
-pursue a goal on its own and report what breaks — say "run an AX evaluation of
-`<tool>` toward this goal: …". Triage later with the `ax-review` skill.
+That triggers the skill's handshake: it fixes the subject, mints a session, tells
+you where reports will land, and then waits — and from there it stays on the
+tool's surface (no reading the source), files friction the moment something trips
+it, and does **not** run its own test battery. Just give it real tasks.
+
+If you want it to *drive itself* — pursue a goal and report what breaks — say
+"run an AX evaluation of `<tool>` toward this goal: …". Triage later with the
+`ax-review` skill.
 
 ## Where reports live
 
