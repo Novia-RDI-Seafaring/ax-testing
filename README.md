@@ -167,14 +167,14 @@ data: every report is a findings-table row, classified by heuristic and severity
 If you use these skills or the AX testing method, please cite the paper
 (GitHub also renders a "Cite this repository" button from `CITATION.cff`):
 
-> Björkskog, C., Jatta, L., Manggård, M., & Westö, J. (2026).
+> Björkskog, C., Jatta, L., Westö, J., & Manggård, M. (2026).
 > *AX: Agent Experience as the Dual of User Experience.* Preprint, in preparation.
 
 ```bibtex
 @article{bjorkskog2026ax,
   title  = {{AX}: Agent Experience as the Dual of User Experience},
-  author = {Bj\"orkskog, Christoffer and Jatta, Lamin and Mangg\aa{}rd, Mikael
-            and West\"o, Johan},
+  author = {Bj\"orkskog, Christoffer and Jatta, Lamin and West\"o, Johan
+            and Mangg\aa{}rd, Mikael},
   year   = {2026},
   note   = {Preprint, in preparation}
 }
