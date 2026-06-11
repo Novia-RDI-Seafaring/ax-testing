@@ -22,6 +22,33 @@ is the agent's *cognitive experience* of that surface: can it discover the
 capability, does the output mean what it says, does an error explain itself, does
 a result carry what's needed to act without a second call.
 
+### Two sub-dimensions: agent-friendly and agent-accessible
+
+UX always carried two concerns: usability (is it pleasant and low-friction) and
+accessibility (can every class of user reach the functionality at all). AX
+inherits both.
+
+- **Agent-friendly** — the experience quality. The surface is intuitive for an
+  agent, the contract tells the truth, the output is clean, and the agent can
+  turn a user's request into tool actions without contortion. This is what the
+  heuristics measure.
+- **Agent-accessible** — the coverage. The agent can do what a human user can,
+  instead of being a second-class user locked out of half the product. The
+  mechanism is **adapter parity**: every operation reachable on the CLI, the MCP
+  server, and the HTTP API, never only through the GUI.
+
+"Accessible" is literal here, not a metaphor. The end user increasingly drives an
+app *through* their own agent. The agent is the user's proxy, the same way a
+screen reader is a proxy for a blind user. Deny the screen reader and you deny
+its user; deny the agent half the product and you deny the human who works
+through it. Agent-accessibility is the same anti-discrimination principle applied
+to a new kind of intermediary.
+
+A tool is **fully usable by an agent** when it is both: agent-accessible (the
+agent is admitted to the whole feature set) and agent-friendly (it can use that
+set without friction). Accessibility is the precondition; friendliness is what
+this skill set measures and reports on.
+
 The defining property, and the one this skill is built around: **an agent trusts
 the contract.** A human cross-checks a tool against the world and shrugs off a
 wrong label. An agent reads the skill, the tool list, and the output, and acts on
@@ -140,14 +167,14 @@ data: every report is a findings-table row, classified by heuristic and severity
 If you use these skills or the AX testing method, please cite the paper
 (GitHub also renders a "Cite this repository" button from `CITATION.cff`):
 
-> Björkskog, C., Jatta, L., Manggård, M., Westö, J., & Häkkinen, J. (2026).
+> Björkskog, C., Jatta, L., Manggård, M., & Westö, J. (2026).
 > *AX: Agent Experience as the Dual of User Experience.* Preprint, in preparation.
 
 ```bibtex
 @article{bjorkskog2026ax,
   title  = {{AX}: Agent Experience as the Dual of User Experience},
   author = {Bj\"orkskog, Christoffer and Jatta, Lamin and Mangg\aa{}rd, Mikael
-            and West\"o, Johan and H\"akkinen, Jukka},
+            and West\"o, Johan},
   year   = {2026},
   note   = {Preprint, in preparation}
 }
