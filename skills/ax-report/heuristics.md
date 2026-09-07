@@ -13,6 +13,7 @@ trusts the contract, so false confidence is the worst defect.
 | `honest_verdicts` | **Honest verdicts** | A check or probe fails only when the real operation would fail. No crying wolf. |
 | `discoverability` | **Discoverability from the skill alone** | An agent reading only the skill can find the capability. A real tool the skill omits does not exist, as far as the agent is concerned. |
 | `self_correcting_errors` | **Self-correcting, legible errors** | The tool repairs bad input where it can, and explains what to do when it cannot. |
+| `affordance_completeness` | **Affordance completeness** | Every operation an agent reasonably needs is a first-class callable — a command, tool, or endpoint — not something it must assemble by probing, scraping, or reverse-engineering. The diagnostic tell of a violation: the agent had to write glue code to obtain something the tool should expose directly. The workaround is the evidence. |
 | `other` | **Other** | Friction that does not fit the above. Describe it in `actual`. |
 
 Severity ranks by blast radius:

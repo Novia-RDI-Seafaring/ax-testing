@@ -17,7 +17,7 @@
     "kind": { "type": "string", "enum": ["friction", "feature_request"] },
     "heuristic": {
       "type": "string",
-      "enum": ["contract_truth", "pure_machine_output", "single_round_trip", "honest_verdicts", "discoverability", "self_correcting_errors", "other"]
+      "enum": ["contract_truth", "pure_machine_output", "single_round_trip", "honest_verdicts", "discoverability", "self_correcting_errors", "affordance_completeness", "other"]
     },
     "severity": { "type": "string", "enum": ["low", "medium", "high", "critical"] },
     "task": { "type": "string", "description": "What the agent was trying to do." },

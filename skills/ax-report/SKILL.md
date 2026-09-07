@@ -129,7 +129,8 @@ Then classify it:
 - **kind** — `friction` or `feature_request`.
 - **heuristic** — which AX heuristic it violates (see `heuristics.md`):
   `contract_truth`, `pure_machine_output`, `single_round_trip`,
-  `honest_verdicts`, `discoverability`, `self_correcting_errors`, or `other`.
+  `honest_verdicts`, `discoverability`, `self_correcting_errors`,
+  `affordance_completeness`, or `other`.
 - **severity** — `low` | `medium` | `high` | `critical`. A *silently false*
   signal outranks a dead-end, which outranks an extra round-trip.
 
